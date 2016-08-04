@@ -229,6 +229,46 @@ public class Matrix {
     }
 
     /**
+     * Returns the concatenation of this matrix and the matrix below.
+     */
+    public Matrix concatenate(Matrix below) {
+        if (columns != below.columns) {
+            throw new IllegalArgumentException("Matrices don't have the same number of columns");
+        }
+        Matrix result = new Matrix(rows + below.rows, columns);
+        for (int c = 0; c < columns; c++) {
+            for (int r = 0; r < rows; r++) {
+                result.data[r][c] = data[r][c];
+            }
+            for (int r = 0; r < below.rows; r++) {
+                result.data[rows + r][c] = below.data[r][c];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns a matrix with the same elements reshaped into the
+     * specified number of rows and columns.
+     */
+    public Matrix reshape(int rows, int columns) {
+        if (rows * columns != this.rows * this.columns) {
+            throw new IllegalArgumentException("Number of elements can't change when reshaping");
+        }
+        Matrix result = new Matrix(rows, columns);
+        int elementCount = rows*columns;
+        for (int e = 0; e < elementCount; e++) {
+            int sourceRow = e / this.columns;
+            int sourceColumn = e - sourceRow * this.columns;
+            int resultRow = e / columns;
+            int resultColumn = e - resultRow * columns;
+
+            result.data[resultRow][resultColumn] = data[sourceRow][sourceColumn];
+        }
+        return result;
+    }
+
+    /**
      * Returns a part of this matrix.
      */
     public Matrix submatrix(int rmin, int cmin, int rmax, int cmax) {

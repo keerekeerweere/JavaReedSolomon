@@ -84,4 +84,21 @@ public class MatrixTest {
                 m.times(m.invert()).toString()
         );
     }
+
+    @Test
+    public void testReshape() {
+        Matrix m = new Matrix(
+                new byte [] [] {
+                        new byte [] { 1, 2 },
+                        new byte [] { 3, 4 }
+                });
+        assertEquals("[[1, 2, 3, 4]]",
+                     m.reshape(1,4).toString());
+
+        assertEquals("[[1], [2], [3], [4]]",
+                     m.reshape(4,1).toString());
+
+        assertEquals("[[1, 2], [3, 4]]",
+                     m.reshape(2,2).toString());        
+    }
 }
